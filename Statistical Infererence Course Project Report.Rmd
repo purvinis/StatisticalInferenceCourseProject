@@ -2,10 +2,15 @@
 title: "Statistical Inference Course Project Report"
 author: "GP"
 date: "12/21/2020"
-output: pdf_document
+output:
+  pdf_document: default
+  word_document: default
 ---
 
 ```{r setup, include=FALSE}
+library(knitr)
+library(ggplot2)
+
 knitr::opts_chunk$set(echo = TRUE)
 ```
 
@@ -13,7 +18,7 @@ knitr::opts_chunk$set(echo = TRUE)
 Author: G. Purvinis
 
 ### Overview
-This reports documents the final course project required of Coursera's "Statistical Inference" course. The project contains two tasks. In the first task (Part 1), we are given an exponential distribution function as a population distribution, and asked to demonstrate the Central Limit Theorem (CLT). The CLT states that if we take n random samples from a population with mean mu and variance sigma^2, then the distribution of the sample mean will be approximately normal, no matter what the population distribution is, provided n is sufficiently large (typically n>30). Furthermore, the sample variance will equal the population variance divided by n.
+This reports documents the final course project required by Coursera's "Statistical Inference" course. The project contains two parts. In Part 1, we are given an exponential distribution function as a population distribution, and asked to demonstrate the Central Limit Theorem (CLT). The CLT states that if we take n random samples from a population with mean mu and variance sigma^2, then the distribution of the sample mean will be approximately normal, no matter what the population distribution is, provided n is sufficiently large (typically n>30). Furthermore, the sample variance will equal the population variance divided by n. In part 2, basic inferential data analysis will be performed on the R Dataset package "ToothGrowth." A null hypothesis for the data will be formed and tested.
 ### Part 1: Simulations Investigating the Exponential Distribution Function
 
 #### Sample Mean versus Theoretical Mean

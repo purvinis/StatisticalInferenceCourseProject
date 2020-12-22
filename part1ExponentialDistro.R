@@ -7,7 +7,13 @@ dvalues <- dexp(xs,rate=lambda)
 data <-data.frame(xs,dvalues)
 
 p1 <- ggplot(data,aes(x=xs,y=dvalues)) + 
-      geom_line()
+      geom_line(size = 2)+
+   geom_area( fill="#69b3a2", alpha=0.4) +
+      xlab("x")+
+      ylab("0.2 exp(x/0.2)")+
+   labs(caption="Exponential Distribution Function with rate lambda = 0.2",
+        title ="Exponential Distribution Function")
+   
 print(p1)
 
 #for the normal distribution that we will compare to
@@ -24,7 +30,7 @@ set.seed(12172020)  #set seed so result is reproducible
 
 histdata <-data.frame(hx =rexp(1000,lambda))
 p2 <- ggplot(data=histdata,aes(x=hx))+
-      geom_histogram(aes(y=..density..),fill="blue",alpha = 0.5)
+      geom_histogram(aes(y=..density..),fill="blue",alpha = 0.4,binwidth = 1)
 
 print(p2)
 
@@ -36,7 +42,7 @@ hist(meansOf40samples,breaks = 20)
 
 mOf40 <-data.frame(hx40=meansOf40samples)
 p3 <- ggplot(data=mOf40,aes(x=hx40))+
-      geom_histogram(aes(y=..density..), fill="purple",color="black",alpha = 0.5)+
+      geom_histogram(aes(y=..density..), fill="purple",color="black",alpha = 0.5,binwidth = 0.5)+
       geom_density(size=2)
 print(p3)
 
