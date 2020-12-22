@@ -1,27 +1,57 @@
 ---
-title: "Statistical Inference Course Project Report"
+title: "Statistical Inference Course Project Report, Part 1"
 author: "GP"
 date: "12/21/2020"
 output:
-  pdf_document: default
   word_document: default
+  pdf_document: default
 ---
 
 ```{r setup, include=FALSE}
 library(knitr)
 library(ggplot2)
-
 knitr::opts_chunk$set(echo = TRUE)
 ```
 
-## Statistical Inference Course Project Report
-Author: G. Purvinis
 
 ### Overview
-This reports documents the final course project required by Coursera's "Statistical Inference" course. The project contains two parts. In Part 1, we are given an exponential distribution function as a population distribution, and asked to demonstrate the Central Limit Theorem (CLT). The CLT states that if we take n random samples from a population with mean mu and variance sigma^2, then the distribution of the sample mean will be approximately normal, no matter what the population distribution is, provided n is sufficiently large (typically n>30). Furthermore, the sample variance will equal the population variance divided by n. In part 2, basic inferential data analysis will be performed on the R Dataset package "ToothGrowth." A null hypothesis for the data will be formed and tested.
+This reports documents the final course project required by Coursera's "Statistical Inference" course. The project contains two parts. In Part 1, we are given an exponential distribution function as a population distribution, and asked to demonstrate the Central Limit Theorem (CLT). The CLT states that if we take n random samples from a population with mean mu and variance sigma^2, then the distribution of the sample mean will be approximately normal, no matter what the population distribution is, provided n is sufficiently large (typically n>30). Furthermore, the sample variance will equal the population variance divided by n. 
+
+The exponential distribution is a continuous distribution that is sometimes used to model the time that elapses before an event occurs.The function contains the parameter lambda, also called the rate parameter. For this exercise, lambda = 0.2 for all of the simulations.The mean of exponential distribution is 1/lambda and the standard deviation is also 1/lambda.
 ### Part 1: Simulations Investigating the Exponential Distribution Function
+The plot below shows what the exponential distribution function looks like.
+
+```{r ,echo=TRUE,fig.dim = c(4,2)}
+lambda = 0.2
+xs <- seq(0,40, by = .05)
+dvalues <- dexp(xs,rate=lambda)
+data <-data.frame(xs,dvalues)
+
+p1 <- ggplot(data,aes(x=xs,y=dvalues)) + 
+      geom_line(size = 2)+
+   geom_area( fill="#69b3a2", alpha=0.4) +
+      xlab("x")+
+      ylab("0.2 exp(x/0.2)")+
+   labs(caption="Exponential Distribution Function with rate lambda = 0.2",
+        title ="Exponential Distribution Function")
+print(p1)
+```
+
+The R function rexp(n,rate) generates a vector of exponentially distributed random numbers. If we generate n=1000 exponentially distributed random numbers, then bin the numbers into a histogram, the distribution looks like:
+``` {r echo=TRUE,fig.dim = c(5,3)}
+set.seed(12172020)  #set seed so result is reproducible
+histdata <-data.frame(hx =rexp(1000,lambda))
+p2 <- ggplot(data=histdata,aes(x=hx))+
+      geom_histogram(aes(y=..density..),fill="blue",alpha = 0.4,binwidth = 1)+
+   xlab("x")+
+   ylab("distribution")+
+   labs(caption="Distribution of 1000 random exponentially distributed numbers",
+        title ="Distribution of 1000 random exponentially n\distributed numbers")
+print(p2)
+```
 
 #### Sample Mean versus Theoretical Mean
+Next we find the mean of 40 random exponentially distributed numbers, do this 1000 times, and plot the distribution of these means for the 1000 trials. The code below performs the function an plots the result. 
 
 #### Sample Variance versus Theoretical Variance
 
@@ -39,18 +69,3 @@ This reports documents the final course project required by Coursera's "Statisti
 
 #### Conclusion
 
-
-
-```{r cars}
-summary(cars)
-```
-
-## Including Plots
-
-You can also embed plots, for example:
-
-```{r pressure, echo=TRUE}
-plot(pressure)
-```
-
-Note that the `echo = FALSE` parameter was added to the code chunk to prevent printing of the R code that generated the plot.

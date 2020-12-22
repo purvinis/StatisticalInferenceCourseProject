@@ -13,7 +13,6 @@ p1 <- ggplot(data,aes(x=xs,y=dvalues)) +
       ylab("0.2 exp(x/0.2)")+
    labs(caption="Exponential Distribution Function with rate lambda = 0.2",
         title ="Exponential Distribution Function")
-   
 print(p1)
 
 #for the normal distribution that we will compare to
@@ -27,10 +26,13 @@ print(p1n)
 
 #rexp(n,rate) generates a vector of exponentially distributed random numbers
 set.seed(12172020)  #set seed so result is reproducible
-
 histdata <-data.frame(hx =rexp(1000,lambda))
 p2 <- ggplot(data=histdata,aes(x=hx))+
-      geom_histogram(aes(y=..density..),fill="blue",alpha = 0.4,binwidth = 1)
+      geom_histogram(aes(y=..density..),fill="blue",alpha = 0.4,binwidth = 1)+
+   xlab("x")+
+   ylab("distribution")+
+   labs(caption="Distribution of 1000 random exponentially distributed numbers",
+        title ="Distribution of 1000 random exponentially distributed numbers")
 
 print(p2)
 
@@ -42,7 +44,7 @@ hist(meansOf40samples,breaks = 20)
 
 mOf40 <-data.frame(hx40=meansOf40samples)
 p3 <- ggplot(data=mOf40,aes(x=hx40))+
-      geom_histogram(aes(y=..density..), fill="purple",color="black",alpha = 0.5,binwidth = 0.5)+
+      geom_histogram(aes(y=..density..,binwidth = 0.5), fill="purple",color="black",alpha = 0.5)+
       geom_density(size=2)
 print(p3)
 

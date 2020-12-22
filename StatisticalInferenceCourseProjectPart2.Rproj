@@ -1,0 +1,40 @@
+---
+title: "Inferential Data Analysis using ToothGrowth dataset"
+author: "GP"
+date: "12/22/2020"
+output: word_document
+---
+
+
+```{r setup, include=FALSE}
+library(knitr)
+library(ggplot2)
+
+knitr::opts_chunk$set(echo = TRUE)
+```
+
+## Statistical Inference Course Project Report, Part 1
+Author: G. Purvinis
+
+### Overview
+This reports documents the final course project required by Coursera's "Statistical Inference" course. The project contains two parts. In Part 1, we are given an exponential distribution function as a population distribution, and asked to demonstrate the Central Limit Theorem (CLT). The CLT states that if we take n random samples from a population with mean mu and variance sigma^2, then the distribution of the sample mean will be approximately normal, no matter what the population distribution is, provided n is sufficiently large (typically n>30). Furthermore, the sample variance will equal the population variance divided by n. 
+### Part 1: Simulations Investigating the Exponential Distribution Function
+
+#### Sample Mean versus Theoretical Mean
+
+#### Sample Variance versus Theoretical Variance
+
+#### Distributions of the Sample Mean and Variance
+
+#### Conclusion
+
+### Part 2: Inferential Data Analyis Using "ToothGrowth" R Dataset package
+
+#### The ToothGrowth dataset
+
+#### Data Summary
+
+#### Testing the data using Statistical Inference Techniques
+
+#### Conclusion
+
