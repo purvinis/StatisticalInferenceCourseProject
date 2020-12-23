@@ -2,7 +2,7 @@
 library(ggplot2)
 
 lambda = 0.2
-xs <- seq(0,40, by = .05)
+xs <- seq(0,39.96, by = .04)
 dvalues <- dexp(xs,rate=lambda)
 data <-data.frame(xs,dvalues)
 
@@ -29,11 +29,14 @@ set.seed(12172020)  #set seed so result is reproducible
 histdata <-data.frame(hx =rexp(1000,lambda))
 p2 <- ggplot(data=histdata,aes(x=hx))+
       geom_histogram(aes(y=..density..),fill="blue",alpha = 0.4,binwidth = 1)+
+   geom_vline(aes(xintercept = 5),color = "orange")+
    xlab("x")+
    ylab("distribution")+
    labs(caption="Distribution of 1000 random exponentially distributed numbers",
-        title ="Distribution of 1000 random exponentially distributed numbers")
-
+        title ="Distribution of 1000 random exponentially distributed numbers")+
+   annotate("text", x = 13, y = .12, 
+              label = "mean = 5" , color = "orange",
+              size=7 , angle=0, fontface="bold")
 print(p2)
 
 
