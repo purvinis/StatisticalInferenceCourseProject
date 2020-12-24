@@ -49,7 +49,7 @@ hist(meansOf40samples,breaks = 20)
 
 mOf40 <-data.frame(hx40=meansOf40samples)
 p3 <- ggplot(data=mOf40,aes(x=hx40))+
-      geom_histogram(aes(y=..density..,binwidth = 0.5), fill="purple",color="black",alpha = 0.5)+
+      geom_histogram(aes(y=..density..),bins = 40, fill="purple",color="black",alpha = 0.5)+
       geom_density(size=2)+
    geom_vline(aes(xintercept = 5),color = "orange",size = 2)+
    xlab("x") + ylab("distribution")+

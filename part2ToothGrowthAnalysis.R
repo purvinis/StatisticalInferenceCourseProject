@@ -19,7 +19,9 @@ d1plot <- ggplot(ToothGrowth,aes(len,color = supp,fill = supp))+
       geom_histogram(aes(y = ..density..),color = "black",binwidth = 1)+
       geom_density(size =2)+
       scale_color_manual(values = c("#FF4466","#9900CC"))+
-      scale_fill_manual(values = c(alpha("#FF9900",0.3),alpha("#9900CC",.3)))
+      scale_fill_manual(values = c(alpha("#FF9900",0.3),alpha("#9900CC",.3)))+
+   labs(title ="Tooth length with VC and OJ supplements", 
+        caption ="Histogram of length with dose in mg/day, for two supplements")
 print(d1plot)
 
 #Ho: The source of the vit C makes no difference;ie. no difference in means

@@ -32,7 +32,9 @@ d1plot <- ggplot(ToothGrowth,aes(len,color = supp,fill = supp))+
       geom_histogram(aes(y = ..density..),color = "black",binwidth = 1)+
       geom_density(size =2)+
       scale_color_manual(values = c("#FF4466","#9900CC"))+
-      scale_fill_manual(values = c(alpha("#FF9900",0.3),alpha("#9900CC",.3)))
+      scale_fill_manual(values = c(alpha("#FF9900",0.3),alpha("#9900CC",.3)))+
+      labs(title ="Tooth length with VC and OJ supplements", 
+        caption ="Histogram of length with dose in mg/day, for two supplements")
 print(d1plot)
 
 ```
@@ -74,4 +76,5 @@ For the dose of 1.0 mg/day, the p-value is `r dose2$p.value` which is < 0.05. We
 For the dose of 2.0 mg/day, the p-value is `r dose3$p.value` which is >> 0.05. The confidence interval is nearly symmetric about 0. We reject the alternative hypothesis and find that OJ and VC do not cause a significant difference in mean tooth growth at this dose.
 
 ### Conclusion
+For this investigation, the assumptions are the Null and alternative hypotheses described. We do not have information about time, or tooth growth without supplements. The hypotheses were formed and tested to compare tooth growth by variables supp and dose using the t-test. It was found that mean tooth growth from OJ is greater than from VC when the dose is 0.5 or 1.0 mg/day, with p-values of `r dose1$p.value` and `r dose2$p.value` respectively using 95% confidence intervals. However, OJ and VC do not cause a significant difference in mean tooth growth at 2.0 mg/day. 
 
