@@ -40,4 +40,5 @@ print(dose2)
 print(dose3)
 
 
+# t = (m - mu)/(s/sqrt(n))
 
