@@ -7,23 +7,20 @@ output:
   pdf_document: default
 ---
 
-```{r setup, include=FALSE}
-library(knitr)
-library(ggplot2)
-library("cowplot")
-knitr::opts_chunk$set(echo = TRUE)
-```
-
-
 ### Overview
-This reports documents the final course project required by Coursera's "Statistical Inference" course. The project contains two parts. In Part 1, we are given an exponential distribution function as a population distribution, and asked to demonstrate the Central Limit Theorem (CLT). The CLT states that if we take n random samples from a population with mean mu and variance sigma^2, then the distribution of the sample mean will be approximately normal, no matter what the population distribution is, provided n is sufficiently large (typically n>30). Furthermore, the sample variance will equal the population variance divided by n. 
+This reports documents the final course project required by Coursera's "Statistical Inference" course. The project contains two parts. In Part 1, we are given an exponential distribution function as a population distribution, and asked to demonstrate the Central Limit Theorem (CLT). The CLT states that if we take n random samples from a population with mean $\mu$ and variance $\sigma^2$, then the distribution of the sample mean will be approximately normal, no matter what the population distribution is, provided n is sufficiently large (typically n>30). Furthermore, the sample variance will equal the population variance divided by n. 
 
-The exponential distribution is a continuous distribution that is sometimes used to model the time that elapses before an event occurs.The function contains the parameter lambda, also called the rate parameter. For this exercise, lambda = 0.2 for all of the simulations.The mean of exponential distribution is 1/lambda and the standard deviation is also 1/lambda.
+The exponential distribution is a continuous distribution that is sometimes used to model the time that elapses before an event occurs.The function contains the parameter lambda, also called the rate parameter. For this exercise, $\lambda$ = 0.2 for all of the simulations.The mean of exponential distribution is 1/$\lambda$ and the standard deviation is also 1/$\lambda$.
 
 ### Part 1: Simulations Investigating the Exponential Distribution Function
 The plots below shows what the exponential distribution function looks like, both continuously (fig. 1A) and sampled.The R function rexp(n,rate) generates a vector of exponentially distributed random numbers. If we generate n=1000 exponentially distributed random numbers, then bin the numbers into a histogram, the distribution looks like figure 1B.
 
-```{r ,echo=TRUE,fig.dim = c(6,3)}
+```{r ,echo=TRUE,fig.dim = c(7,3)}
+library(knitr)
+library(ggplot2)
+library("cowplot")
+knitr::opts_chunk$set(echo = TRUE)
+
 lambda = 0.2
 xs <- seq(0,40, by = .05)
 dvalues <- dexp(xs,rate=lambda)
@@ -52,24 +49,52 @@ plot_grid(p1, p2, labels = c('A', 'B'), label_size = 12)
 
 ```
 
-
 #### Sample Mean versus Theoretical Mean
+The theoretical mean of the exponential function is 1/$\lambda$ = 1/0.2 = 5.0. The mean, or expected value, of a discrete distribution function (in this case it is sampled) is $\mu~x =\Sigma xP(X=x)$. It is easiest to let R do this calculation.
 
+```{r}
+samplemean <-mean(histdata$hx)
+CIsample <-t.test(histdata$hx,mu = 5)$conf.int
+```
+The sample mean is `r samplemean` and the theoretical mean is 5.0. The 95% confidence interval is found using R's t.test() and is `r CIsample`.
 
 #### Sample Variance versus Theoretical Variance
+The theoretical variance of the exponential function is 1/$\lambda$ = 1/0.2 = 5.0. The variance of a discrete distribution function (in this case it is sampled) is $\sigma^{2} =\Sigma {(x-{\mu}~{x})}^2 P(X=x)$. It is easiest to let R do this calculation.
+
+```{r}
+samplevariance <-var(histdata$hx)
+sampleStDev <-sqrt(samplevariance)
+```
+
+The theoretical variance is the standard deviation squared and is $5^{2} = 25$. The sample variance is `r samplevariance` and the sample standard deviation is `r sampleStDev`. 
 
 #### Distributions of the Sample Mean and Variance
-Next we find the mean of 40 random exponentially distributed numbers, do this 1000 times, and plot the distribution of these means for the 1000 trials. The code below performs the function an plots the result. 
+Next we find the mean of 40 random exponentially distributed numbers, do this 1000 times, and plot the distribution of these means and variances for the 1000 trials. The code below also finds the mean of the means, and the standard deviation of the means as numeric values. 
+
+```{r,fig.dim = c(7,3)}
+meansOf40samples =sdOf40samples =NULL
+for (i in 1:1000) meansOf40samples = c(meansOf40samples,mean(rexp(40,rate = lambda)))
+for (i in 1:1000) sdOf40samples = c(sdOf40samples,sd(rexp(40,rate = lambda)))
+
+mOf40 <-data.frame(hx40=meansOf40samples)
+p3 <- ggplot(data=mOf40,aes(x=hx40))+
+      geom_histogram(aes(y=..density..),bins=40, fill="purple",color="black",alpha = 0.5)+
+      geom_density(size=2)+
+   geom_vline(aes(xintercept = 5),color = "orange",size = 2)+
+   xlab("x") + ylab("distribution")+
+   labs(caption="Distribution of 1000 means of 40 random exponentially distributed numbers",
+        title ="Distribution of Means of 40 samples")+
+   annotate("text", x = 6.5, y = .5, 
+            label = "mean ~ 5" , color = "orange",
+            size=7 , angle=0, fontface="bold")
+print(p3)
+mOfm <-mean(meansOf40samples)
+mOfsd <-mean(sdOf40samples)
+sdOfm <-sd(meansOf40samples)  #5/sqrt(40)= 0.7905694
+```
+
+The mean of 1000 samples of size n = 40 is `r mOfm`. CLT tells us this should be normally distributed and indeed the figure above has a Gaussian shaped. In comparison, the distribution of 1000 random exponentials is exponentially shaped (Figure 1B). However, the means of both are approximately the same. The standard deviation of the 1000 samples of size 40 is `r sdOfm`. CLT tells us that sample standard deviation will equal the population standard deviation divide by $sqrt(n)$, or 5/sqrt(40)= 0.7905694. Our data agrees the the CLT. 
 
 #### Conclusion
 
-### Part 2: Inferential Data Analyis Using "ToothGrowth" R Dataset package
-
-#### The ToothGrowth dataset
-
-#### Data Summary
-
-#### Testing the data using Statistical Inference Techniques
-
-#### Conclusion
-
+In this exercise, the CLT concepts were illustrated using simulations involving the exponential distribution function. The CLT states that if we take n random samples from a population with mean $\mu$ and variance $\sigma^2$, then the distribution of the sample mean will be approximately normal, no matter what the population distribution is, provided n is sufficiently large (typically n>30). Furthermore, the sample variance will equal the population variance divided by n.

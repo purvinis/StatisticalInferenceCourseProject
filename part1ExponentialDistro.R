@@ -38,8 +38,10 @@ p2 <- ggplot(data=histdata,aes(x=hx))+
               label = "mean = 5" , color = "orange",
               size=7 , angle=0, fontface="bold")
 print(p2)
+samplemean <-mean(histdata$hx)
 
-
+CIsample <-t.test(histdata$hx,mu = 5)$conf.int
+print(mean(histdata$hx))
 meansOf40samples =sdOf40samples =NULL
 for (i in 1:1000) meansOf40samples = c(meansOf40samples,mean(rexp(40,rate = lambda)))
 for (i in 1:1000) sdOf40samples = c(sdOf40samples,sd(rexp(40,rate = lambda)))
@@ -48,7 +50,14 @@ hist(meansOf40samples,breaks = 20)
 mOf40 <-data.frame(hx40=meansOf40samples)
 p3 <- ggplot(data=mOf40,aes(x=hx40))+
       geom_histogram(aes(y=..density..,binwidth = 0.5), fill="purple",color="black",alpha = 0.5)+
-      geom_density(size=2)
+      geom_density(size=2)+
+   geom_vline(aes(xintercept = 5),color = "orange",size = 2)+
+   xlab("x") + ylab("distribution")+
+   labs(caption="Distribution of 1000 means of 40 random exponentially distributed numbers",
+        title ="Distribution of Means")+
+   annotate("text", x = 6.5, y = .5, 
+            label = "mean ~ 5" , color = "orange",
+            size=7 , angle=0, fontface="bold")
 print(p3)
 
 popmean <-mean(rexp(1000,lambda))

@@ -1,0 +1,83 @@
+---
+title: "Inferential Data Analysis using ToothGrowth dataset"
+author: "GP"
+date: "12/22/2020"
+output: word_document
+---
+
+### The ToothGrowth dataset
+This reports documents the final course project required by Coursera's "Statistical Inference" course. The project contains two parts. This is part 2, in which inferential statistics concepts are applied to the R datasets package ToothGrowth. According to the R help, this data set contains "The Effect of Vitamin C on Tooth Growth in Guinea Pigs." The data is "The response is the length of odontoblasts (cells responsible for tooth growth) in 60 guinea pigs. Each animal received one of three dose levels of vitamin C (0.5, 1, and 2 mg/day) by one of two delivery methods, orange juice or ascorbic acid (a form of vitamin C and coded as VC)."
+
+In this report, the ToothGrowth data will be loaded and then some basic exploratory data analysis will be done to summarize the data. Next, null and alternative hypotheses will be formed and tested to compare tooth growth by variables supp and dose. Finally conclusions will be presented.
+
+```{r setup, include=FALSE, echo = TRUE}
+#This code chuck loads libraries and the data
+library(knitr)
+library(ggplot2)
+library(dplyr)
+data(ToothGrowth)
+knitr::opts_chunk$set(echo = TRUE)
+```
+### Data Summary
+The dataset is a dataframe with 60 observations on 3 variables. A sample is below. 
+
+```{r , echo = TRUE}
+print(head(ToothGrowth))
+```
+
+Since both supp and dose are variable, plots were made of the distribution of tooth length (len) by variables supp (i.e. delivery method) and dose. Observing the plots shows overlapping distributions, particularly at the higher dose. The t-test in statistics is use to determine whether the means of two groups are equal to each other. The null hypothesis is that the two means are equal, and the alternative is that they are unequal.Looking at the plots below, it appears the means *may* be different for OJ and VC when dose is 0.5 or 1.0 mg/day. When the dose is 2.0 mg/day, the means look like they could be the same. The t-test will be used to test the significance.
+```{r, fig.dim = c(8,3)}
+d1plot <- ggplot(ToothGrowth,aes(len,color = supp,fill = supp))+
+      facet_grid(.~dose)+
+      geom_histogram(aes(y = ..density..),color = "black",binwidth = 1)+
+      geom_density(size =2)+
+      scale_color_manual(values = c("#FF4466","#9900CC"))+
+      scale_fill_manual(values = c(alpha("#FF9900",0.3),alpha("#9900CC",.3)))
+print(d1plot)
+
+```
+
+### Testing the data using Statistical Inference Techniques
+These are the hypotheses to be tested:
+
+1. Null hypothesis 1: The mean tooth growth is 0.
+Alternative hypothesis 1: Tooth growth mean is not equal to 0 when given a vitamin c supplement (any delivery method or dose).
+2. Null hypothesis 2: The mean tooth growth is equal for either OJ or VC with dose = 0.5 mg/day.
+Alternative hypothesis 2: The mean tooth growth for OJ > mean for VC.
+3. Null hypothesis 3: The mean tooth growth is equal for either OJ or VC with dose = 1.0 mg/day.
+Alternative hypothesis 3: The mean tooth growth for OJ > mean for VC.
+4. Null hypothesis 4: The mean tooth growth is equal for either OJ or VC with dose = 2.0 mg/day.
+Alternative hypothesis 4: The mean tooth growth for OJ is not equal to the mean for VC.
+
+
+
+
+```{r, echo = TRUE}
+overall <- t.test(ToothGrowth$len ~ ToothGrowth$supp,alt = "two.sided")
+print(overall)
+```
+The confidence interval contains 0, so there is a chance that the observed mean is within the confidence interval. Also, the p-value is 0.06063 which is > 0.05. We accept the null hypothesis and cannot conclude that supplements affect tooth growth. 
+
+### Ha mean length not 0 when dose = 0.5,1.0, or 2.0
+We again use the t.test and observe the mean length and confidence interval, only this time we have the length depend on the dose.
+
+```{r, echo = TRUE}
+d1 <- filter(ToothGrowth,dose == 0.5)
+d2 <- filter(ToothGrowth,dose == 1.0)
+d3 <- filter(ToothGrowth,dose == 2.0)
+dose1 <- t.test(d1$len ~ d1$supp,alt = "two.sided")
+dose2 <- t.test(d2$len ~ d2$supp,alt = "two.sided")
+dose3 <- t.test(d3$len ~ d3$supp,alt = "two.sided")
+print(dose1$p.value)
+print(dose2$p.value)
+print(dose3$p.value)
+
+```
+For the dose of 0.5 mg/day, the p-value is 0.006359 which is < 0.05. We conclude this data may be significant. The confidence interval is all positive. We accept the alternative hypothesis and find that this dose may make longer teeth.
+
+For the dose of 1.0 mg/day, the p-value is 0.001038 which is < 0.05. We conclude this data may be significant. The confidence interval is all positive. We accept the alternative hypothesis and find that this dose may make longer teeth.
+
+For the dose of 2.0 mg/day, the p-value is 0.9639 which is >> 0.05. We conclude this data does not support the null hypothesis. The confidence interval is nearly symmetric about 0. We reject the alternative hypothesis and find that this dose probably does not make longer teeth.
+
+### Conclusion
+
